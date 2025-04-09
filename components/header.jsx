@@ -9,8 +9,7 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
+
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
@@ -21,7 +20,7 @@ import { ChevronDown, FileText, GraduationCap, LayoutDashboard, PenBox, StarsIco
 const Header = () => {
   return (
     <header className='fixed top-0 w-full border-b bg-background/80 background-blur-md z-50 support-[backdrop-filter]:bg-background/60'>
-      <nav className='container mx-auto ppx-4 h-16 flex items-center justify-between '>
+      <nav className='container mx-auto px-4 h-16 flex items-center justify-between '>
       <Link href={'/'}>
         <h1 className='text-gray-300 text-2xl font-bold'>Mentor<span className='text-blue-500 text-3xl'>AI</span></h1>
       </Link>
@@ -35,11 +34,11 @@ const Header = () => {
             </Button>
           </Link>
         <DropdownMenu>
-          <DropdownMenuTrigger>
+          <DropdownMenuTrigger asChild>
             <Button>
               <StarsIcon className='h-4 w-4'/>
               <span className='hidden md:block'>Growth Tools</span>
-              <ChevronDown className='h-4 2-4'/>
+              <ChevronDown className='h-4 w-4'/>
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
