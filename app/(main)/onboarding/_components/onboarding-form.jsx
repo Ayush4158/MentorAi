@@ -24,27 +24,48 @@ import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Button } from '@/components/ui/button'
 import { Loader2 } from 'lucide-react'
-
-
+import useFetch from '@/hook/use-fetch'
+import { updateUser } from "@/actions/user";
+import { toast } from 'sonner'
 
 const onboardingForm = ({industries}) => {
   const[selectedIndustry, setSelectedIndustry] = useState(null);
   const router = useRouter()
-  
-  // const {
-  //   loading: updateLoading,
-  //   fn: updateUserFn,
-  //   data: updateResult,
-  // } = useFetch(updateUser);
+
+  const {
+    loading: updateLoading,
+    fn: updateUserFn,
+    data: updateResult,
+  } = useFetch(updateUser);
 
   const { register, handleSubmit, formState: { errors }, setValue, watch } = useForm({
     resolver: zodResolver(onboardingSchema)
   });
   const watchIndustry = watch("industry");
 
-  const onSubmit = async(value) => {
-console.log(value)
+  const onSubmit = async(values) => {
+    // console.log(value)
+    try {
+      const formattedIndustry = `${values.industry}-${values.subIndustry
+        .toLowerCase()
+        .replace(/ /g, "-")}`;
+
+      await updateUserFn({
+        ...values, //---------------------------------------------------------------
+        industry: formattedIndustry,
+      });
+    } catch (error) {
+      console.error("Onboarding error:", error);
+    }
   }
+
+  useEffect(() => {
+    if (updateResult?.success && !updateLoading) {
+      toast.success("Profile completed successfully!");
+      router.push("/dashboard");
+      router.refresh();
+    }
+  }, [updateResult, updateLoading]);
 
   return (
     <div className='flex items-center justify-center bg-background'>
@@ -161,15 +182,14 @@ console.log(value)
             </div>
 
             <Button type="submit" className="w-full" >
-              {/* {updateLoading ? (
+              {updateLoading ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                   Saving...
                 </>
               ) : (
                 "Complete Profile"
-              )} */}
-              submit
+              )}
             </Button>
           </form>
         </CardContent>

@@ -2,13 +2,14 @@
 
 import { db } from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server"
-import { MarketOutlook } from "@prisma/client";
+import { DemandLevel, MarketOutlook } from "@prisma/client";
+import { generateAIInsights } from "./dashboard";
 
-export async function updatedUser(data){
+export async function updateUser(data){
   const {userId} = await auth();
   if(!userId) throw new Error("Unauthorized");
 
-  const user = await db.findUnique({
+  const user = await db.user.findUnique({
     where: {
       clerkUserId: userId,
     }
@@ -25,20 +26,15 @@ export async function updatedUser(data){
           }
         });
         if (!industryInsight) {
-          industryInsight = await tx.industryInsight.create({
+          const insights = await generateAIInsights(data.industry);
+
+          industryInsight = await db.industryInsight.create({
             data: {
               industry: data.industry,
-              salaryRanges: [],
-              growthRate: 0,
-              demanLevel: "Medium",
-              topSkills: [],
-              MarketOutlook: "Neutral",
-              keyTrends: [],
-              recommendedSkills: [],
-              nextUpdate: new Date(Date.now+ 7 * 24 *60 *60 *1000),
-
-            }
-          })
+              ...insights,
+              nextUpdate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+            },
+          });
         }
 
         const updatedUser = await tx.user.update({
@@ -58,10 +54,10 @@ export async function updatedUser(data){
         timeout: 10000
       }
     );
-    return result.user;
+    return { success: true, ...result};
   } catch (error) {
     console.error("Error updating user and industry: ", error.message)
-    throw new Error("failed to update profile")
+    throw new Error("failed to update profile" + error.message)
   }
 }
 
