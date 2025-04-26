@@ -67,17 +67,17 @@ model CoverLetter {
 }
 
 model IndustryInsight {
-  id                String        @id @default(cuid())
-  industry          String        @unique
+  id                String   @id @default(cuid())
+  industry          String   @unique
   salaryRanges      Json[]
   growthRate        Float
-  demandLevel       String
   topSkills         String[]
-  marketOutlook     String
   keyTrends         String[]
   recommendedSkills String[]
-  lastUpdated       DateTime      @default(now())
+  lastUpdated       DateTime @default(now())
   nextUpdate        DateTime
+  demandLevel       String
+  marketOutlook     String
   users             User[]
 
   @@index([industry])
