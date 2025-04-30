@@ -33,7 +33,7 @@ export default function PerformanceChart({ assessments }) {
   }, [assessments]);
 
   return (
-    <Card>
+    <Card className="bg-gray-900">
       <CardHeader>
         <CardTitle className="gradient-title text-3xl md:text-4xl">
           Performance Trend
