@@ -59,7 +59,7 @@ export default function CoverLetterGenerator() {
 
   return (
     <div className="space-y-6">
-      <Card>
+      <Card className='bg-gray-900 '>
         <CardHeader>
           <CardTitle>Job Details</CardTitle>
           <CardDescription>
@@ -73,7 +73,7 @@ export default function CoverLetterGenerator() {
               <div className="space-y-2">
                 <Label htmlFor="companyName">Company Name</Label>
                 <Input
-                  className="text-black border-2 border-black"
+                  className=" border-2 text-white border-black"
                   id="companyName"
                   placeholder="Enter company name"
                   {...register("companyName")}
@@ -88,7 +88,7 @@ export default function CoverLetterGenerator() {
               <div className="space-y-2">
                 <Label htmlFor="jobTitle">Job Title</Label>
                 <Input
-                  className="text-black border-2 border-black"
+                  className="text-white border-2 border-black"
                   id="jobTitle"
                   placeholder="Enter job title"
                   {...register("jobTitle")}
@@ -106,7 +106,7 @@ export default function CoverLetterGenerator() {
               <Textarea
                 id="jobDescription"
                 placeholder="Paste the job description here"
-                className="h-32 text-black border-2 border-black"
+                className="h-32 text-white border-2 border-black"
                 {...register("jobDescription")}
               />
               {errors.jobDescription && (
